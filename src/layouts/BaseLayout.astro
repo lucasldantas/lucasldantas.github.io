@@ -1,0 +1,101 @@
+---
+import '@/styles/global.css';
+import type { Locale } from '@/data/portfolio';
+
+interface Props {
+  title: string;
+  description: string;
+  locale: Locale;
+  canonicalPath?: string;
+  alternatePath?: string;
+  image?: string;
+}
+
+const {
+  title,
+  description,
+  locale,
+  canonicalPath = locale === 'pt' ? '/' : '/en/',
+  alternatePath = locale === 'pt' ? '/en/' : '/',
+  image = '/assets/lucas-lopes-dantas.png'
+} = Astro.props;
+
+const site = 'https://lucasldantas.github.io';
+const canonical = new URL(canonicalPath, site).toString();
+const alternate = new URL(alternatePath, site).toString();
+const imageUrl = new URL(image, site).toString();
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Lucas Lopes Dantas',
+  url: site,
+  image: imageUrl,
+  jobTitle: locale === 'pt' ? 'Analista de Suporte Sênior' : 'Senior Support Analyst',
+  address: { '@type': 'PostalAddress', addressLocality: 'Natal', addressRegion: 'RN', addressCountry: 'BR' },
+  sameAs: ['https://github.com/lucasldantas', 'https://www.linkedin.com/in/lucaslopesdantas'],
+  knowsAbout: ['GLPI', 'ITSM', 'Endpoint Engineering', 'Windows Deployment', 'Automation', 'REST APIs', 'Systems Integration']
+};
+---
+
+<!doctype html>
+<html lang={locale === 'pt' ? 'pt-BR' : 'en'}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="theme-color" content="#07131c" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <meta name="author" content="Lucas Lopes Dantas" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:locale" content={locale === 'pt' ? 'pt_BR' : 'en_US'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang={locale === 'pt' ? 'en' : 'pt-BR'} href={alternate} />
+    <link rel="alternate" hreflang="x-default" href={site} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>{title}</title>
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <a class="skip-link" href="#conteudo">{locale === 'pt' ? 'Pular para o conteúdo' : 'Skip to content'}</a>
+    <div class="site-grid" aria-hidden="true"></div>
+    <slot />
+    <script is:inline>
+      document.documentElement.classList.add('js');
+
+      const toggle = document.querySelector('[data-menu-toggle]');
+      const menu = document.querySelector('[data-menu]');
+      toggle?.addEventListener('click', () => {
+        const open = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!open));
+        menu?.classList.toggle('is-open', !open);
+      });
+      menu?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => {
+        toggle?.setAttribute('aria-expanded', 'false');
+        menu.classList.remove('is-open');
+      }));
+
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.12 });
+        document.querySelectorAll('[data-reveal]').forEach((el) => observer.observe(el));
+      } else {
+        document.querySelectorAll('[data-reveal]').forEach((el) => el.classList.add('is-visible'));
+      }
+    </script>
+  </body>
+</html>

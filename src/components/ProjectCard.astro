@@ -1,0 +1,32 @@
+---
+import type { Locale, Project } from '@/data/portfolio';
+import { projectHref } from '@/data/portfolio';
+const { project, locale, label } = Astro.props as { project: Project; locale: Locale; label: string };
+---
+
+<article class="project-card" data-reveal>
+  <a class="project-card-link" href={projectHref(locale, project.slug)} aria-label={`${label}: ${project.title}`}>
+    <div class="project-card-topline">
+      <span class="project-number">/{project.number}</span>
+      <span class="project-type">{project.type}</span>
+      <span class="project-arrow" aria-hidden="true">↗</span>
+    </div>
+    <div class="project-blueprint" aria-hidden="true">
+      <span class="node node-a"></span>
+      <span class="node node-b"></span>
+      <span class="node node-c"></span>
+      <span class="route route-a"></span>
+      <span class="route route-b"></span>
+      <span class="project-code">SYS.{project.number}</span>
+    </div>
+    <div class="project-card-content">
+      <p class="status-line"><span></span>{project.status}</p>
+      <h3>{project.title}</h3>
+      <p>{project.summary}</p>
+      <div class="tag-list">
+        {project.technologies.slice(0, 4).map((technology) => <span>{technology}</span>)}
+      </div>
+      <span class="text-link">{label}<span aria-hidden="true"> →</span></span>
+    </div>
+  </a>
+</article>

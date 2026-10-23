@@ -1,0 +1,77 @@
+---
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { projects, projectHref, type Locale } from '@/data/portfolio';
+
+const { locale, slug } = Astro.props as { locale: Locale; slug: string };
+const project = projects[locale].find((item) => item.slug === slug);
+if (!project) return Astro.redirect(locale === 'pt' ? '/404/' : '/en/404/');
+const siblingLocale: Locale = locale === 'pt' ? 'en' : 'pt';
+const projectIndex = projects[locale].findIndex((item) => item.slug === slug);
+const siblingProject = projects[siblingLocale][projectIndex];
+const canonicalPath = projectHref(locale, project.slug);
+const alternatePath = projectHref(siblingLocale, siblingProject.slug);
+const home = locale === 'pt' ? '/' : '/en/';
+const backLabel = locale === 'pt' ? 'Voltar aos projetos' : 'Back to work';
+const labels = locale === 'pt'
+  ? { challenge: 'O desafio', approach: 'A abordagem', result: 'O resultado', architecture: 'Arquitetura da solução', stack: 'Tecnologias e plataformas', source: 'Ver repositório no GitHub', previous: 'Anterior', next: 'Próximo' }
+  : { challenge: 'The challenge', approach: 'The approach', result: 'The outcome', architecture: 'Solution architecture', stack: 'Technologies & platforms', source: 'View repository on GitHub', previous: 'Previous', next: 'Next' };
+const previous = projects[locale][(projectIndex - 1 + projects[locale].length) % projects[locale].length];
+const next = projects[locale][(projectIndex + 1) % projects[locale].length];
+---
+
+<BaseLayout
+  title={`${project.title} — Lucas Lopes Dantas`}
+  description={project.summary}
+  locale={locale}
+  canonicalPath={canonicalPath}
+  alternatePath={alternatePath}
+>
+  <Header locale={locale} languageHref={alternatePath} />
+  <main id="conteudo" class="case-main">
+    <section class="case-hero shell">
+      <a class="back-link" href={`${home}#${locale === 'pt' ? 'projetos' : 'work'}`}>← {backLabel}</a>
+      <div class="case-kicker" data-reveal>
+        <span>CASE_{project.number}</span><span>{project.type}</span><span>{project.status}</span>
+      </div>
+      <h1 data-reveal>{project.title}</h1>
+      <p class="case-summary" data-reveal>{project.summary}</p>
+      <div class="case-blueprint" data-reveal aria-hidden="true">
+        {project.architecture.map((node, index) => (
+          <div class="blueprint-node"><span>0{index + 1}</span><strong>{node}</strong></div>
+        ))}
+      </div>
+    </section>
+
+    <section class="case-content section-rule">
+      <div class="shell case-story">
+        <article data-reveal><span class="case-label">01 / {labels.challenge}</span><p>{project.challenge}</p></article>
+        <article data-reveal><span class="case-label">02 / {labels.approach}</span><p>{project.approach}</p></article>
+        <article data-reveal><span class="case-label">03 / {labels.result}</span><p>{project.outcome}</p></article>
+      </div>
+    </section>
+
+    <section class="case-details section-rule">
+      <div class="shell case-details-grid">
+        <div data-reveal>
+          <p class="eyebrow"><span></span>{labels.architecture}</p>
+          <ol class="architecture-list">
+            {project.architecture.map((step, index) => <li><span>0{index + 1}</span>{step}</li>)}
+          </ol>
+        </div>
+        <div data-reveal>
+          <p class="eyebrow"><span></span>{labels.stack}</p>
+          <div class="tag-list large-tags">{project.technologies.map((technology) => <span>{technology}</span>)}</div>
+          {project.repo && <a class="button button-primary source-button" href={project.repo} target="_blank" rel="noreferrer">{labels.source}<span aria-hidden="true">↗</span></a>}
+        </div>
+      </div>
+    </section>
+
+    <nav class="case-navigation shell" aria-label={locale === 'pt' ? 'Outros projetos' : 'Other projects'}>
+      <a href={projectHref(locale, previous.slug)}><span>← {labels.previous}</span><strong>{previous.title}</strong></a>
+      <a href={projectHref(locale, next.slug)}><span>{labels.next} →</span><strong>{next.title}</strong></a>
+    </nav>
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

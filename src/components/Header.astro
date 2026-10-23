@@ -1,0 +1,28 @@
+---
+import { copy, type Locale } from '@/data/portfolio';
+const { locale, languageHref } = Astro.props as { locale: Locale; languageHref?: string };
+const t = copy[locale];
+const home = locale === 'pt' ? '/' : '/en/';
+const isHome = Astro.url.pathname === home;
+---
+
+<header class="site-header">
+  <div class="shell header-inner">
+    <a class="brand" href={home} aria-label="Lucas Lopes Dantas — Home">
+      <span class="brand-mark" aria-hidden="true"><span>LD</span></span>
+      <span class="brand-text">Lucas <strong>Dantas</strong></span>
+    </a>
+
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu" data-menu-toggle>
+      <span class="sr-only">{locale === 'pt' ? 'Abrir menu' : 'Open menu'}</span>
+      <span></span><span></span>
+    </button>
+
+    <nav id="site-menu" class="site-nav" aria-label={locale === 'pt' ? 'Navegação principal' : 'Main navigation'} data-menu>
+      {t.nav.map(([label, href]) => <a href={isHome ? href : `${home}${href}`}>{label}</a>)}
+      <a class="language-link" href={languageHref ?? t.switchHref} aria-label={locale === 'pt' ? 'View in English' : 'Ver em português'}>
+        <span aria-hidden="true">◫</span> {t.switchLabel}
+      </a>
+    </nav>
+  </div>
+</header>

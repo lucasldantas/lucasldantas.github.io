@@ -1,0 +1,204 @@
+---
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import ProjectCard from '@/components/ProjectCard.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { copy, projects, type Locale } from '@/data/portfolio';
+
+const { locale } = Astro.props as { locale: Locale };
+const t = copy[locale];
+const localizedProjects = projects[locale];
+const ids = locale === 'pt'
+  ? { projects: 'projetos', expertise: 'especialidades', timeline: 'trajetoria', contact: 'contato' }
+  : { projects: 'work', expertise: 'expertise', timeline: 'experience', contact: 'contact' };
+---
+
+<BaseLayout title={t.metaTitle} description={t.metaDescription} locale={locale}>
+  <Header locale={locale} />
+
+  <main id="conteudo">
+    <section class="hero shell">
+      <div class="hero-copy" data-reveal>
+        <p class="eyebrow"><span></span>{t.role}</p>
+        <h1>{t.heroTitle}</h1>
+        <p class="hero-lead">{t.heroLead}</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href={`#${ids.projects}`}>{t.primaryCta}<span aria-hidden="true">↓</span></a>
+          <a class="button button-ghost" href={`#${ids.contact}`}>{t.secondaryCta}<span aria-hidden="true">↗</span></a>
+        </div>
+        <p class="availability"><span class="pulse"></span>{t.availability}</p>
+      </div>
+
+      <div class="hero-visual" data-reveal>
+        <div class="portrait-frame">
+          <div class="portrait-coordinate coordinate-top">05°47′ S · 35°12′ W</div>
+          <img src="/assets/lucas-lopes-dantas.png" alt={locale === 'pt' ? 'Retrato de Lucas Lopes Dantas' : 'Portrait of Lucas Lopes Dantas'} width="1254" height="1254" fetchpriority="high" />
+          <div class="portrait-overlay"></div>
+          <div class="portrait-corner corner-a"></div>
+          <div class="portrait-corner corner-b"></div>
+          <div class="portrait-label">
+            <span>PROFILE_NODE</span>
+            <strong>LUCAS.LD</strong>
+          </div>
+        </div>
+        <div class="orbit-card card-a" aria-hidden="true"><span></span> API.CONNECTED</div>
+        <div class="orbit-card card-b" aria-hidden="true"><span></span> SYS.OPERATIONAL</div>
+      </div>
+
+      <div class="proof-grid" data-reveal>
+        {t.proof.map(([value, label]) => (
+          <div class="proof-item">
+            <strong>{value}</strong>
+            <span>{label}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="statement-section section-rule">
+      <div class="shell statement-grid">
+        <div data-reveal>
+          <p class="section-index">/00</p>
+          <p class="eyebrow"><span></span>{t.statementEyebrow}</p>
+        </div>
+        <div data-reveal>
+          <h2 class="statement-title">{t.statement}</h2>
+          <p class="large-body">{t.statementBody}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="projects-section section-rule" id={ids.projects}>
+      <div class="shell">
+        <div class="section-heading" data-reveal>
+          <div>
+            <p class="section-index">/01</p>
+            <p class="eyebrow"><span></span>{t.projectsEyebrow}</p>
+          </div>
+          <div>
+            <h2>{t.projectsTitle}</h2>
+            <p>{t.projectsIntro}</p>
+          </div>
+        </div>
+        <div class="projects-grid">
+          {localizedProjects.map((project) => <ProjectCard project={project} locale={locale} label={t.viewCase} />)}
+        </div>
+        <div class="secondary-project" data-reveal>
+          <div>
+            <span class="mini-index">/EXTRA</span>
+            <h3>Slack Messenger</h3>
+            <p>{locale === 'pt' ? 'Mensagens personalizadas em massa via Slack API, com tags dinâmicas, prévia e status por destinatário.' : 'Personalized bulk messages through the Slack API, with dynamic tags, preview, and per-recipient status.'}</p>
+          </div>
+          <a class="button button-ghost" href="https://github.com/lucasldantas/slack-messenger" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="expertise-section section-rule" id={ids.expertise}>
+      <div class="shell">
+        <div class="section-heading" data-reveal>
+          <div>
+            <p class="section-index">/02</p>
+            <p class="eyebrow"><span></span>{t.expertiseEyebrow}</p>
+          </div>
+          <div><h2>{t.expertiseTitle}</h2></div>
+        </div>
+        <div class="expertise-list">
+          {t.expertise.map((item) => (
+            <article class="expertise-item" data-reveal>
+              <span class="expertise-code">{item.code}</span>
+              <div>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </div>
+              <div class="tag-list expertise-tags">
+                {item.tags.map((tag) => <span>{tag}</span>)}
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="method-section section-rule">
+      <div class="shell">
+        <div class="section-heading" data-reveal>
+          <div>
+            <p class="section-index">/03</p>
+            <p class="eyebrow"><span></span>{t.methodEyebrow}</p>
+          </div>
+          <div><h2>{t.methodTitle}</h2></div>
+        </div>
+        <div class="method-flow">
+          {t.methodSteps.map(([title, text], index) => (
+            <article class="method-step" data-reveal>
+              <span class="method-number">0{index + 1}</span>
+              <div class="method-node" aria-hidden="true"></div>
+              <h3>{title}</h3>
+              <p>{text}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="timeline-section section-rule" id={ids.timeline}>
+      <div class="shell">
+        <div class="section-heading" data-reveal>
+          <div>
+            <p class="section-index">/04</p>
+            <p class="eyebrow"><span></span>{t.timelineEyebrow}</p>
+          </div>
+          <div>
+            <h2>{t.timelineTitle}</h2>
+            <p>{t.timelineIntro}</p>
+          </div>
+        </div>
+        <div class="timeline-layout">
+          <div class="timeline" data-reveal>
+            {t.timeline.map((item, index) => (
+              <article class:list={['timeline-item', { current: index === 0 }]}>
+                <div class="timeline-dot" aria-hidden="true"></div>
+                <time>{item.period}</time>
+                <div><h3>{item.role}</h3><p>{item.company}</p></div>
+              </article>
+            ))}
+          </div>
+          <aside class="education-panel" data-reveal>
+            <div class="panel-header"><span>LEARNING.LOG</span><span>05 ITEMS</span></div>
+            <h3>{t.educationTitle}</h3>
+            <div class="education-list">
+              {t.education.map(([course, school]) => (
+                <div><strong>{course}</strong><span>{school}</span></div>
+              ))}
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact-section section-rule" id={ids.contact}>
+      <div class="shell contact-grid">
+        <div data-reveal>
+          <p class="section-index">/05</p>
+          <p class="eyebrow"><span></span>{t.contactEyebrow}</p>
+        </div>
+        <div data-reveal>
+          <h2>{t.contactTitle}</h2>
+          <p>{t.contactText}</p>
+          <a class="email-link" href="mailto:lucasldantas@yahoo.com">
+            <span>{t.emailLabel}</span>
+            <strong>lucasldantas@yahoo.com</strong>
+            <span aria-hidden="true">↗</span>
+          </a>
+          <div class="contact-links">
+            <a href="https://github.com/lucasldantas" target="_blank" rel="noreferrer">GitHub ↗</a>
+            <a href="https://www.linkedin.com/in/lucaslopesdantas" target="_blank" rel="noreferrer">LinkedIn ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer locale={locale} />
+</BaseLayout>

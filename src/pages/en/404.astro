@@ -1,0 +1,15 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+---
+<BaseLayout title="Page not found — Lucas Lopes Dantas" description="The requested page was not found." locale="en" canonicalPath="/en/404/">
+  <Header locale="en" />
+  <main id="conteudo" class="error-page shell">
+    <p class="eyebrow"><span></span>HTTP 404</p>
+    <h1>This path is not on the map.</h1>
+    <p>The page may have moved or the address is incorrect.</p>
+    <a class="button button-primary" href="/en/">Back home <span>→</span></a>
+  </main>
+  <Footer locale="en" />
+</BaseLayout>
