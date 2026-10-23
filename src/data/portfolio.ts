@@ -187,8 +187,8 @@ export const copy = {
       { period: '2026 — atual', company: 'Arco Educação', role: 'Analista de Suporte Sênior' },
       { period: '2024 — 2026', company: 'Arco Educação', role: 'Analista de Suporte Pleno' },
       { period: '2023 — 2024', company: 'Riachuelo', role: 'Analista de Suporte Pleno' },
-      { period: '2022 — 2023', company: 'Riachuelo', role: 'Analista de Suporte Júnior' },
-      { period: '2018 — 2021', company: 'Riachuelo', role: 'Técnico de Microinformática Jr' },
+      { period: 'jan 2022 — dez 2023', company: 'Riachuelo', role: 'Analista de Suporte Júnior' },
+      { period: 'jun 2018 — dez 2021', company: 'Riachuelo', role: 'Técnico de Microinformática Jr' },
       { period: '2015 — 2018', company: 'Riachuelo', role: 'Atendente de telemarketing' }
     ],
     educationTitle: 'Formação e desenvolvimento',
@@ -259,8 +259,8 @@ export const copy = {
       { period: '2026 — present', company: 'Arco Educação', role: 'Senior Support Analyst' },
       { period: '2024 — 2026', company: 'Arco Educação', role: 'Mid-Level Support Analyst' },
       { period: '2023 — 2024', company: 'Riachuelo', role: 'Mid-Level Support Analyst' },
-      { period: '2022 — 2023', company: 'Riachuelo', role: 'Junior Support Analyst' },
-      { period: '2018 — 2021', company: 'Riachuelo', role: 'Junior Microcomputer Technician' },
+      { period: 'Jan 2022 — Dec 2023', company: 'Riachuelo', role: 'Junior Support Analyst' },
+      { period: 'Jun 2018 — Dec 2021', company: 'Riachuelo', role: 'Junior Microcomputer Technician' },
       { period: '2015 — 2018', company: 'Riachuelo', role: 'Customer Service Representative' }
     ],
     educationTitle: 'Education & development',
