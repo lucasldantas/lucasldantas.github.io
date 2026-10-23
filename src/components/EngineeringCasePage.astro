@@ -1,0 +1,77 @@
+---
+import BrandLogo from '@/components/BrandLogo.astro';
+import Footer from '@/components/Footer.astro';
+import Header from '@/components/Header.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { engineeringCases, engineeringCaseHref } from '@/data/engineering-cases';
+import type { Locale } from '@/data/portfolio';
+
+const { locale, slug } = Astro.props as { locale: Locale; slug: string };
+const item = engineeringCases[locale].find((entry) => entry.slug === slug);
+if (!item) return Astro.redirect(locale === 'pt' ? '/404/' : '/en/404/');
+const siblingLocale: Locale = locale === 'pt' ? 'en' : 'pt';
+const caseIndex = engineeringCases[locale].findIndex((entry) => entry.slug === slug);
+const sibling = engineeringCases[siblingLocale][caseIndex];
+const canonicalPath = engineeringCaseHref(locale, item.slug);
+const alternatePath = engineeringCaseHref(siblingLocale, sibling.slug);
+const home = locale === 'pt' ? '/' : '/en/';
+const labels = locale === 'pt' ? {
+  back: 'Voltar aos cases', context: 'Contexto profissional', challenge: 'Desafio', solution: 'Solução',
+  contribution: 'Minha atuação', technologies: 'Tecnologias', impact: 'Impacto', flow: 'Fluxo ilustrativo',
+  principles: 'Escopo público do case', principlesBody: 'Conteúdo limitado a informações profissionais confirmadas, sem dados internos, métricas restritas ou detalhes sensíveis.'
+} : {
+  back: 'Back to cases', context: 'Professional context', challenge: 'Challenge', solution: 'Solution',
+  contribution: 'My contribution', technologies: 'Technologies', impact: 'Impact', flow: 'Illustrative flow',
+  principles: 'Public case scope', principlesBody: 'Content is limited to confirmed professional information, without internal data, restricted metrics, or sensitive details.'
+};
+---
+
+<BaseLayout title={`${item.title} — Lucas Lopes Dantas`} description={item.summary} locale={locale} canonicalPath={canonicalPath} alternatePath={alternatePath}>
+  <Header locale={locale} languageHref={alternatePath} />
+  <main id="conteudo" class="case-main professional-case-main">
+    <section class="case-hero shell professional-case-hero">
+      <a class="back-link" href={`${home}#${locale === 'pt' ? 'cases' : 'cases'}`}>← {labels.back}</a>
+      <div class="professional-case-brand" data-reveal>
+        <BrandLogo brand="glpi" name="GLPI" size="large" />
+        <div><span>{item.type}</span><strong>{item.organization}</strong></div>
+      </div>
+      <div class="case-kicker" data-reveal><span>CASE_{item.number}</span><span>{labels.context}</span></div>
+      <h1 data-reveal>{item.title}</h1>
+      <p class="case-summary" data-reveal>{item.summary}</p>
+
+      <div class="professional-flow" data-reveal>
+        <p class="flow-label">{labels.flow}</p>
+        <div class="flow-track">
+          {item.flow.map((node, index) => (
+            <div class="flow-node"><span>0{index + 1}</span><strong>{node}</strong></div>
+          ))}
+        </div>
+        <p class="flow-note">{item.flowNote}</p>
+      </div>
+    </section>
+
+    <section class="professional-story section-rule">
+      <div class="shell professional-story-grid">
+        <article data-reveal><span class="case-label">01 / {labels.challenge}</span><p>{item.challenge}</p></article>
+        <article data-reveal><span class="case-label">02 / {labels.solution}</span><p>{item.solution}</p></article>
+        <article data-reveal><span class="case-label">03 / {labels.contribution}</span><p>{item.contribution}</p></article>
+        <article data-reveal><span class="case-label">04 / {labels.impact}</span><p>{item.impact}</p></article>
+      </div>
+    </section>
+
+    <section class="case-details section-rule">
+      <div class="shell case-details-grid">
+        <div data-reveal>
+          <p class="eyebrow"><span></span>{labels.technologies}</p>
+          <div class="tag-list large-tags">{item.technologies.map((technology) => <span>{technology}</span>)}</div>
+        </div>
+        <aside class="public-scope-note" data-reveal>
+          <span>PUBLIC_SCOPE</span>
+          <h2>{labels.principles}</h2>
+          <p>{labels.principlesBody}</p>
+        </aside>
+      </div>
+    </section>
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

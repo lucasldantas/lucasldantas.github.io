@@ -1,0 +1,11 @@
+---
+import EngineeringCasePage from '@/components/EngineeringCasePage.astro';
+import { engineeringCases } from '@/data/engineering-cases';
+
+export function getStaticPaths() {
+  return engineeringCases.pt.map((item) => ({ params: { slug: item.slug } }));
+}
+
+const { slug } = Astro.params;
+---
+<EngineeringCasePage locale="pt" slug={slug!} />

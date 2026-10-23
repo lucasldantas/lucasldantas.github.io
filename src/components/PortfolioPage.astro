@@ -2,15 +2,42 @@
 import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
 import ProjectCard from '@/components/ProjectCard.astro';
+import EngineeringCaseCard from '@/components/EngineeringCaseCard.astro';
+import BrandLogo from '@/components/BrandLogo.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { copy, projects, type Locale } from '@/data/portfolio';
+import { engineeringCases } from '@/data/engineering-cases';
+import { technologyCategories } from '@/data/technologies';
 
 const { locale } = Astro.props as { locale: Locale };
 const t = copy[locale];
 const localizedProjects = projects[locale];
+const publicProjects = localizedProjects.filter((project) => Boolean(project.repo));
+const anonymizedProjects = localizedProjects.filter((project) => !project.repo);
+const localizedCases = engineeringCases[locale];
+const localizedTechnologies = technologyCategories[locale];
 const ids = locale === 'pt'
-  ? { projects: 'projetos', expertise: 'especialidades', timeline: 'trajetoria', contact: 'contato' }
-  : { projects: 'work', expertise: 'expertise', timeline: 'experience', contact: 'contact' };
+  ? { cases: 'cases', projects: 'projetos', expertise: 'especialidades', timeline: 'trajetoria', contact: 'contato' }
+  : { cases: 'cases', projects: 'work', expertise: 'expertise', timeline: 'experience', contact: 'contact' };
+const sectionCopy = locale === 'pt' ? {
+  casesEyebrow: 'Cases de Engenharia',
+  casesTitle: 'Experiência aplicada em ambientes corporativos reais.',
+  casesIntro: 'Soluções implementadas e sustentadas com foco em operação, administração de plataformas e evolução contínua.',
+  studyEyebrow: 'Estudo de caso anonimizado',
+  studyTitle: 'Experiência técnica preservada, contexto sensível protegido.',
+  studyIntro: 'Este conteúdo descreve decisões e abordagens sem expor organização, dados, configurações ou indicadores internos.',
+  techIntro: 'Produtos, plataformas e linguagens apresentados pelo papel que exercem no trabalho — sem rankings subjetivos ou níveis artificiais.',
+  logoNote: 'Marcas identificam tecnologias utilizadas e não representam certificação, parceria ou endosso dos fabricantes.'
+} : {
+  casesEyebrow: 'Engineering Cases',
+  casesTitle: 'Applied experience in real corporate environments.',
+  casesIntro: 'Solutions implemented and sustained with a focus on operations, platform administration, and continuous evolution.',
+  studyEyebrow: 'Anonymized case study',
+  studyTitle: 'Technical experience preserved, sensitive context protected.',
+  studyIntro: 'This content describes decisions and approaches without exposing organizations, data, configurations, or internal indicators.',
+  techIntro: 'Products, platforms, and languages presented by the role they play in the work — without subjective rankings or artificial proficiency levels.',
+  logoNote: 'Brand marks identify technologies used and do not represent certification, partnership, or vendor endorsement.'
+};
 ---
 
 <BaseLayout title={t.metaTitle} description={t.metaDescription} locale={locale}>
@@ -23,7 +50,7 @@ const ids = locale === 'pt'
         <h1>{t.heroTitle}</h1>
         <p class="hero-lead">{t.heroLead}</p>
         <div class="hero-actions">
-          <a class="button button-primary" href={`#${ids.projects}`}>{t.primaryCta}<span aria-hidden="true">↓</span></a>
+          <a class="button button-primary" href={`#${ids.cases}`}>{t.primaryCta}<span aria-hidden="true">↓</span></a>
           <a class="button button-ghost" href={`#${ids.contact}`}>{t.secondaryCta}<span aria-hidden="true">↗</span></a>
         </div>
         <p class="availability"><span class="pulse"></span>{t.availability}</p>
@@ -68,11 +95,29 @@ const ids = locale === 'pt'
       </div>
     </section>
 
-    <section class="projects-section section-rule" id={ids.projects}>
+    <section class="engineering-cases-section section-rule" id={ids.cases}>
       <div class="shell">
         <div class="section-heading" data-reveal>
           <div>
             <p class="section-index">/01</p>
+            <p class="eyebrow"><span></span>{sectionCopy.casesEyebrow}</p>
+          </div>
+          <div>
+            <h2>{sectionCopy.casesTitle}</h2>
+            <p>{sectionCopy.casesIntro}</p>
+          </div>
+        </div>
+        <div class="engineering-cases-list">
+          {localizedCases.map((item) => <EngineeringCaseCard item={item} locale={locale} />)}
+        </div>
+      </div>
+    </section>
+
+    <section class="projects-section section-rule" id={ids.projects}>
+      <div class="shell">
+        <div class="section-heading" data-reveal>
+          <div>
+            <p class="section-index">/02</p>
             <p class="eyebrow"><span></span>{t.projectsEyebrow}</p>
           </div>
           <div>
@@ -81,7 +126,7 @@ const ids = locale === 'pt'
           </div>
         </div>
         <div class="projects-grid">
-          {localizedProjects.map((project) => <ProjectCard project={project} locale={locale} label={t.viewCase} />)}
+          {publicProjects.map((project) => <ProjectCard project={project} locale={locale} label={t.viewCase} />)}
         </div>
         <div class="secondary-project" data-reveal>
           <div>
@@ -91,6 +136,17 @@ const ids = locale === 'pt'
           </div>
           <a class="button button-ghost" href="https://github.com/lucasldantas/slack-messenger" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a>
         </div>
+
+        <div class="work-subsection" data-reveal>
+          <div class="work-subsection-heading">
+            <p class="eyebrow"><span></span>{sectionCopy.studyEyebrow}</p>
+            <h3>{sectionCopy.studyTitle}</h3>
+            <p>{sectionCopy.studyIntro}</p>
+          </div>
+          <div class="anonymized-study-grid">
+            {anonymizedProjects.map((project) => <ProjectCard project={project} locale={locale} label={locale === 'pt' ? 'Explorar estudo' : 'Explore study'} />)}
+          </div>
+        </div>
       </div>
     </section>
 
@@ -98,25 +154,30 @@ const ids = locale === 'pt'
       <div class="shell">
         <div class="section-heading" data-reveal>
           <div>
-            <p class="section-index">/02</p>
+            <p class="section-index">/03</p>
             <p class="eyebrow"><span></span>{t.expertiseEyebrow}</p>
           </div>
-          <div><h2>{t.expertiseTitle}</h2></div>
+          <div><h2>{t.expertiseTitle}</h2><p>{sectionCopy.techIntro}</p></div>
         </div>
-        <div class="expertise-list">
-          {t.expertise.map((item) => (
-            <article class="expertise-item" data-reveal>
-              <span class="expertise-code">{item.code}</span>
-              <div>
-                <h3>{item.title}</h3>
-                <p>{item.text}</p>
+        <div class="technology-categories">
+          {localizedTechnologies.map((category) => (
+            <section class="technology-category" data-reveal>
+              <header>
+                <span>{category.code}</span>
+                <div><h3>{category.title}</h3><p>{category.description}</p></div>
+              </header>
+              <div class="technology-grid">
+                {category.items.map((item) => (
+                  <article class="technology-card">
+                    <BrandLogo brand={item.brand} name={item.name} />
+                    <div><h4>{item.name}</h4><p>{item.description}</p></div>
+                  </article>
+                ))}
               </div>
-              <div class="tag-list expertise-tags">
-                {item.tags.map((tag) => <span>{tag}</span>)}
-              </div>
-            </article>
+            </section>
           ))}
         </div>
+        <p class="brand-disclaimer">{sectionCopy.logoNote}</p>
       </div>
     </section>
 
@@ -124,7 +185,7 @@ const ids = locale === 'pt'
       <div class="shell">
         <div class="section-heading" data-reveal>
           <div>
-            <p class="section-index">/03</p>
+            <p class="section-index">/04</p>
             <p class="eyebrow"><span></span>{t.methodEyebrow}</p>
           </div>
           <div><h2>{t.methodTitle}</h2></div>
@@ -146,7 +207,7 @@ const ids = locale === 'pt'
       <div class="shell">
         <div class="section-heading" data-reveal>
           <div>
-            <p class="section-index">/04</p>
+            <p class="section-index">/05</p>
             <p class="eyebrow"><span></span>{t.timelineEyebrow}</p>
           </div>
           <div>
@@ -180,7 +241,7 @@ const ids = locale === 'pt'
     <section class="contact-section section-rule" id={ids.contact}>
       <div class="shell contact-grid">
         <div data-reveal>
-          <p class="section-index">/05</p>
+          <p class="section-index">/06</p>
           <p class="eyebrow"><span></span>{t.contactEyebrow}</p>
         </div>
         <div data-reveal>

@@ -1,0 +1,50 @@
+---
+import {
+  siCloudflare, siPython, siJavascript, siTypescript, siReact, siNodedotjs,
+  siPostgresql, siGit, siGithub, siPhp, siMysql, siRedis
+} from 'simple-icons';
+import { faWindows, faMicrosoft, faSlack, faGoogle } from '@fortawesome/free-brands-svg-icons';
+import type { BrandKey } from '@/data/technologies';
+
+const { brand, name, size = 'normal' } = Astro.props as { brand: BrandKey; name: string; size?: 'normal' | 'large' };
+const simpleIcons = {
+  cloudflare: siCloudflare,
+  python: siPython,
+  javascript: siJavascript,
+  typescript: siTypescript,
+  react: siReact,
+  nodejs: siNodedotjs,
+  postgresql: siPostgresql,
+  git: siGit,
+  github: siGithub,
+  php: siPhp,
+  mysql: siMysql,
+  redis: siRedis
+} as const;
+const icon = brand in simpleIcons ? simpleIcons[brand as keyof typeof simpleIcons] : undefined;
+const fontAwesomeIcons = { windows: faWindows, microsoft: faMicrosoft, slack: faSlack, googleworkspace: faGoogle } as const;
+const fontAwesomeIcon = brand in fontAwesomeIcons ? fontAwesomeIcons[brand as keyof typeof fontAwesomeIcons] : undefined;
+const displayColors: Partial<Record<BrandKey, string>> = { github: '#eaf5f7', mysql: '#63b1e5', redis: '#ff6f61', php: '#9aa6ff' };
+const fontAwesomeColors: Partial<Record<BrandKey, string>> = { windows: '#00a4ef', microsoft: '#f25022', slack: '#e01e5a', googleworkspace: '#4285f4' };
+const fallback: Partial<Record<BrandKey, string>> = {
+  jumpcloud: 'JC', zscaler: 'ZS', sentinelone: 'S1', powershell: '>_', rest: 'API', webhooks: 'HOOK', winpe: 'PE'
+};
+---
+
+<span class:list={['brand-logo', `brand-logo-${size}`, { 'brand-logo-official': brand === 'glpi' || brand === 'powershell', 'brand-logo-fallback': !icon && !fontAwesomeIcon && brand !== 'glpi' && brand !== 'powershell' }]}>
+  {brand === 'glpi' ? (
+    <img src="/assets/logos/glpi.svg" width="108" height="46" alt={`${name} logo`} loading="lazy" />
+  ) : brand === 'powershell' ? (
+    <img src="/assets/logos/powershell.svg" width="64" height="64" alt={`${name} logo`} loading="lazy" />
+  ) : icon ? (
+    <svg viewBox="0 0 24 24" role="img" aria-label={`${name} logo`} style={`--brand-color:#${displayColors[brand]?.replace('#', '') ?? icon.hex}`}>
+      <path d={icon.path}></path>
+    </svg>
+  ) : fontAwesomeIcon ? (
+    <svg viewBox={`0 0 ${fontAwesomeIcon.icon[0]} ${fontAwesomeIcon.icon[1]}`} role="img" aria-label={`${name} logo`} style={`--brand-color:${fontAwesomeColors[brand]}`}>
+      <path d={fontAwesomeIcon.icon[4] as string}></path>
+    </svg>
+  ) : (
+    <span role="img" aria-label={`${name} — identificação tipográfica`}>{fallback[brand] ?? name.slice(0, 3).toUpperCase()}</span>
+  )}
+</span>
