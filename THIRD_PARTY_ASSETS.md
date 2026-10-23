@@ -3,10 +3,17 @@
 ## GLPI
 
 - Asset: `public/assets/logos/glpi.svg`
-- Source: official `glpi-project/glpi` repository, `public/pics/logos/sources/GLPI_Logo-color.svg`
-- Project: https://github.com/glpi-project/glpi
+- Source: https://www.glpi-project.org/wp-content/uploads/2025/03/glpi-teclib-color-logo.svg
 
 The GLPI logo is shown to identify the product discussed in the professional case. It does not imply certification, partnership, or endorsement.
+
+## JumpCloud, Zscaler, and SentinelOne
+
+- JumpCloud: https://images.seeklogo.com/logo-png/41/2/jumpcloud-logo-png_seeklogo-411431.png
+- Zscaler: https://companieslogo.com/img/orig/ZS-46a5871c.png?t=1720244494
+- SentinelOne: https://companieslogo.com/img/orig/S-778d1d19.png?t=1720244494
+
+The supplied raster assets are stored locally and displayed without changing their proportions or colors.
 
 ## PowerShell
 

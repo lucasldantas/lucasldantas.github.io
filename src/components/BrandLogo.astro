@@ -24,18 +24,24 @@ const simpleIcons = {
 const icon = brand in simpleIcons ? simpleIcons[brand as keyof typeof simpleIcons] : undefined;
 const fontAwesomeIcons = { windows: faWindows, microsoft: faMicrosoft, slack: faSlack, googleworkspace: faGoogle } as const;
 const fontAwesomeIcon = brand in fontAwesomeIcons ? fontAwesomeIcons[brand as keyof typeof fontAwesomeIcons] : undefined;
+const localAssets: Partial<Record<BrandKey, { src: string; width: number; height: number }>> = {
+  glpi: { src: '/assets/logos/glpi.svg', width: 108, height: 58 },
+  powershell: { src: '/assets/logos/powershell.svg', width: 64, height: 64 },
+  jumpcloud: { src: '/assets/logos/jumpcloud.png', width: 64, height: 64 },
+  zscaler: { src: '/assets/logos/zscaler.png', width: 64, height: 40 },
+  sentinelone: { src: '/assets/logos/sentinelone.png', width: 48, height: 60 }
+};
+const localAsset = localAssets[brand];
 const displayColors: Partial<Record<BrandKey, string>> = { github: '#eaf5f7', mysql: '#63b1e5', redis: '#ff6f61', php: '#9aa6ff' };
 const fontAwesomeColors: Partial<Record<BrandKey, string>> = { windows: '#00a4ef', microsoft: '#f25022', slack: '#e01e5a', googleworkspace: '#4285f4' };
 const fallback: Partial<Record<BrandKey, string>> = {
-  jumpcloud: 'JC', zscaler: 'ZS', sentinelone: 'S1', powershell: '>_', rest: 'API', webhooks: 'HOOK', winpe: 'PE'
+  rest: 'API', webhooks: 'HOOK', winpe: 'PE'
 };
 ---
 
-<span class:list={['brand-logo', `brand-logo-${size}`, { 'brand-logo-official': brand === 'glpi' || brand === 'powershell', 'brand-logo-fallback': !icon && !fontAwesomeIcon && brand !== 'glpi' && brand !== 'powershell' }]}>
-  {brand === 'glpi' ? (
-    <img src="/assets/logos/glpi.svg" width="108" height="46" alt={`${name} logo`} loading="lazy" />
-  ) : brand === 'powershell' ? (
-    <img src="/assets/logos/powershell.svg" width="64" height="64" alt={`${name} logo`} loading="lazy" />
+<span class:list={['brand-logo', `brand-logo-${size}`, `brand-logo-${brand}`, { 'brand-logo-official': Boolean(localAsset), 'brand-logo-fallback': !localAsset && !icon && !fontAwesomeIcon }]}>
+  {localAsset ? (
+    <img src={localAsset.src} width={localAsset.width} height={localAsset.height} alt={`${name} logo`} loading="lazy" />
   ) : icon ? (
     <svg viewBox="0 0 24 24" role="img" aria-label={`${name} logo`} style={`--brand-color:#${displayColors[brand]?.replace('#', '') ?? icon.hex}`}>
       <path d={icon.path}></path>

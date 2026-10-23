@@ -317,6 +317,9 @@
   .brand-logo-large { width: 118px; height: 74px; }
   .brand-logo-large img { width: 92px; }
   .brand-logo-large svg { width: 48px; height: 48px; }
+  .brand-logo-jumpcloud img { width: 48px; }
+  .brand-logo-zscaler img { width: 44px; max-height: 42px; object-fit: contain; }
+  .brand-logo-sentinelone img { width: 34px; max-height: 42px; object-fit: contain; }
   .brand-logo-fallback > span { color: var(--mint); font: 700 11px/1 var(--mono); letter-spacing: -.02em; }
 
   .engineering-cases-section { background: linear-gradient(180deg, rgba(85,184,255,.025), transparent 55%); }
