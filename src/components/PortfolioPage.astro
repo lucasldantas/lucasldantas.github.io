@@ -127,14 +127,30 @@ const sectionCopy = locale === 'pt' ? {
         </div>
         <div class="projects-grid">
           {publicProjects.map((project) => <ProjectCard project={project} locale={locale} label={t.viewCase} />)}
-        </div>
-        <div class="secondary-project" data-reveal>
-          <div>
-            <span class="mini-index">/EXTRA</span>
-            <h3>Slack Messenger</h3>
-            <p>{locale === 'pt' ? 'Mensagens personalizadas em massa via Slack API, com tags dinâmicas, prévia e status por destinatário.' : 'Personalized bulk messages through the Slack API, with dynamic tags, preview, and per-recipient status.'}</p>
-          </div>
-          <a class="button button-ghost" href="https://github.com/lucasldantas/slack-messenger" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+          <article class="project-card slack-project-card" data-reveal>
+            <a class="project-card-link" href="https://github.com/lucasldantas/slack-messenger" target="_blank" rel="noreferrer" aria-label={locale === 'pt' ? 'Abrir Slack Messenger no GitHub' : 'Open Slack Messenger on GitHub'}>
+              <div class="project-card-topline">
+                <span class="project-number">/EXTRA</span>
+                <span class="project-type">{locale === 'pt' ? 'Automação e integração' : 'Automation & integration'}</span>
+                <span class="project-arrow" aria-hidden="true">↗</span>
+              </div>
+              <div class="project-blueprint slack-blueprint" aria-hidden="true">
+                <span class="slack-ring slack-ring-a"></span>
+                <span class="slack-ring slack-ring-b"></span>
+                <div class="slack-logo"><BrandLogo brand="slack" name="Slack" size="large" /></div>
+                <span class="project-code">SYS.SLACK</span>
+              </div>
+              <div class="project-card-content">
+                <p class="status-line"><span></span>{locale === 'pt' ? 'Projeto público' : 'Public project'}</p>
+                <h3>Slack Messenger</h3>
+                <p>{locale === 'pt' ? 'Mensagens personalizadas em massa via Slack API, com tags dinâmicas, prévia e status por destinatário.' : 'Personalized bulk messages through the Slack API, with dynamic tags, preview, and per-recipient status.'}</p>
+                <div class="tag-list">
+                  {['Slack API', locale === 'pt' ? 'Tags dinâmicas' : 'Dynamic tags', locale === 'pt' ? 'Prévia' : 'Preview', 'Status'].map((tag) => <span>{tag}</span>)}
+                </div>
+                <span class="text-link">GitHub<span aria-hidden="true"> ↗</span></span>
+              </div>
+            </a>
+          </article>
         </div>
 
         <div class="work-subsection" data-reveal>

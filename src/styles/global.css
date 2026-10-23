@@ -316,6 +316,7 @@
   .brand-logo img { width: 42px; height: auto; }
   .brand-logo-large { width: 118px; height: 74px; }
   .brand-logo-large img { width: 92px; }
+  .brand-logo-large svg { width: 48px; height: 48px; }
   .brand-logo-fallback > span { color: var(--mint); font: 700 11px/1 var(--mono); letter-spacing: -.02em; }
 
   .engineering-cases-section { background: linear-gradient(180deg, rgba(85,184,255,.025), transparent 55%); }
@@ -398,6 +399,15 @@
   .project-card:hover .node { box-shadow: 0 0 18px rgba(134,247,208,.55); transform: rotate(135deg); }
   .project-card:hover .route { filter: brightness(1.5); }
   .project-code { position: absolute; right: 16px; bottom: 14px; color: var(--dim); font: 500 9px/1 var(--mono); letter-spacing: .1em; }
+  .slack-blueprint { display: grid; place-items: center; background-color: #091822; background-image: radial-gradient(circle at center, rgba(224,30,90,.1), transparent 115px), linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size: auto, 30px 30px, 30px 30px; }
+  .slack-logo { position: relative; z-index: 3; padding: 9px; border: 1px solid rgba(224,30,90,.32); background: rgba(7,19,28,.92); transition: transform .3s ease, box-shadow .3s ease; }
+  .slack-logo .brand-logo { border: 0; background: transparent; }
+  .slack-ring { position: absolute; border: 1px solid var(--line-strong); border-radius: 50%; transition: border-color .3s ease, transform .3s ease; }
+  .slack-ring-a { width: 150px; height: 150px; }
+  .slack-ring-b { width: 210px; height: 210px; border-style: dashed; }
+  .slack-project-card:hover .slack-logo { box-shadow: 0 0 30px rgba(224,30,90,.14); transform: translateY(-3px); }
+  .slack-project-card:hover .slack-ring-a { border-color: rgba(54,197,240,.55); transform: rotate(20deg); }
+  .slack-project-card:hover .slack-ring-b { border-color: rgba(46,182,125,.4); transform: rotate(-15deg); }
   .project-card-content { padding: 30px; }
   .status-line { display: flex; align-items: center; gap: 8px; color: var(--dim); font: 500 9px/1 var(--mono); letter-spacing: .07em; text-transform: uppercase; }
   .status-line span { width: 6px; height: 6px; border-radius: 50%; background: var(--mint); }
@@ -407,13 +417,6 @@
   .project-card .tag-list { margin-top: 23px; }
   .tag-list > span { padding: 7px 9px; border: 1px solid var(--line); color: #94abb1; background: rgba(255,255,255,.018); font: 500 9px/1 var(--mono); letter-spacing: .035em; }
   .text-link { display: inline-block; margin-top: 30px; color: var(--mint); font-size: 12px; font-weight: 750; }
-  .secondary-project { display: flex; align-items: center; justify-content: space-between; gap: 30px; margin-top: 24px; padding: 28px 30px; border: 1px solid var(--line); background: rgba(255,255,255,.016); }
-  .secondary-project > div { display: grid; grid-template-columns: 70px minmax(180px, .5fr) minmax(300px, 1fr); gap: 22px; align-items: center; }
-  .mini-index { color: var(--mint); font: 550 9px/1 var(--mono); }
-  .secondary-project h3 { font-size: 19px; }
-  .secondary-project p { color: var(--muted); font-size: 13px; }
-  .secondary-project .button { flex: 0 0 auto; }
-
   .expertise-list { border-top: 1px solid var(--line-strong); }
   .expertise-item { min-height: 190px; display: grid; grid-template-columns: 80px minmax(250px, .8fr) minmax(340px, 1.2fr); gap: 30px; align-items: center; padding: 32px 20px; border-bottom: 1px solid var(--line-strong); transition: background .25s ease, padding .25s ease; }
   .expertise-item:hover { padding-inline: 30px; background: rgba(85,184,255,.035); }
@@ -539,8 +542,6 @@
     .card-a { left: -20px; }
     .card-b { right: -10px; }
     .proof-item { grid-template-columns: 1fr; gap: 9px; }
-    .secondary-project > div { grid-template-columns: auto 1fr; }
-    .secondary-project p { grid-column: 1 / -1; }
     .expertise-item { grid-template-columns: 50px minmax(0, .9fr) minmax(260px, 1.1fr); }
     .timeline-layout { grid-template-columns: 1fr .75fr; gap: 50px; }
     .engineering-case-card { grid-template-columns: minmax(290px, .72fr) minmax(0, 1.28fr); }
@@ -580,9 +581,6 @@
     .anonymized-study-grid { width: 100%; }
     .technology-grid { grid-template-columns: 1fr; }
     .project-card-content > p:not(.status-line) { min-height: 0; }
-    .secondary-project { flex-direction: column; align-items: stretch; }
-    .secondary-project > div { grid-template-columns: 1fr; }
-    .secondary-project p { grid-column: auto; }
     .expertise-item { grid-template-columns: 42px 1fr; gap: 20px; padding: 30px 4px; }
     .expertise-item:hover { padding-inline: 8px; }
     .expertise-tags { grid-column: 2; justify-content: flex-start; }
